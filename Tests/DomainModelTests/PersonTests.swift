@@ -68,6 +68,18 @@ class FamilyTests : XCTestCase {
         XCTAssert(familyIncome == 12000)
     }
   
+// ADDED TEST FOR EC
+    func testAddChild() {
+        let parent1 = Person(firstName: "John", lastName: "Doe", age: 30)
+        let parent2 = Person(firstName: "Jane", lastName: "Doe", age: 28)
+        let family = Family(spouse1: parent1, spouse2: parent2)
+        
+        let child = Person(firstName: "Baby", lastName: "Doe", age: 1)
+        let addedChild = family.haveChild(child)
+        
+        XCTAssert(family.members.count == 3, "Family should have 3 members after adding a child")
+        XCTAssert(addedChild.firstName == "Baby", "The child's name should be 'Baby'")
+    }
     static var allTests = [
         ("testFamily", testFamily),
         ("testFamilyWithKids", testFamilyWithKids),

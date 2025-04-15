@@ -81,10 +81,31 @@ class MoneyTests: XCTestCase {
     XCTAssert(total.currency == "GBP")
   }
     
-    // Test: Try creating a Money instance with an invalid currency
+// ADDED TESTS FOR EC
     func testInvalidCurrency() {
         let invalidMoney = Money(amount: 10, currency: "XYZ")
         XCTAssert(invalidMoney.currency == "USD", "Money should default to USD if invalid currency is provided")
+    }
+    
+    func testNegativeMoneyAmount() {
+        let negativeMoney = Money(amount: -10, currency: "USD")
+        XCTAssert(negativeMoney.amount == -10, "Money should accept negative amounts")
+    }
+
+    func testMoneyAdditionWithNegativeAmount() {
+        let tenUSD = Money(amount: 10, currency: "USD")
+        let negativeFiveUSD = Money(amount: -5, currency: "USD")
+        
+        let total = tenUSD.add(negativeFiveUSD)
+        XCTAssert(total.amount == 5, "Money addition with negative amount should result in correct total")
+    }
+
+    func testMoneySubtractionWithNegativeAmount() {
+        let tenUSD = Money(amount: 10, currency: "USD")
+        let negativeFiveUSD = Money(amount: -5, currency: "USD")
+        
+        let total = tenUSD.subtract(negativeFiveUSD)
+        XCTAssert(total.amount == 15, "Money subtraction with negative amount should result in correct total")
     }
 
     static var allTests = [
@@ -102,7 +123,10 @@ class MoneyTests: XCTestCase {
         
         ("testAddUSDtoUSD", testAddUSDtoUSD),
         ("testAddUSDtoGBP", testAddUSDtoGBP),
-        ("testInvalidCurrency", testInvalidCurrency)
+        ("testInvalidCurrency", testInvalidCurrency),
+        ("testNegativeMoneyAmount", testNegativeMoneyAmount),
+        ("testMoneyAdditionWithNegativeAmount", testMoneyAdditionWithNegativeAmount),
+        ("testMoneySubtractionWithNegativeAmount", testMoneySubtractionWithNegativeAmount)
     ]
 }
 

@@ -12,23 +12,18 @@ public struct Money {
     var amount: Int
     var currency: String
 
-    // Initialize Money with amount and currency
     public init(amount: Int, currency: String) {
-        // Ensure the currency is valid; if not, reject with a default value or handle accordingly
         let validCurrencies = ["USD", "GBP", "EUR", "CAN"]
         if validCurrencies.contains(currency) {
             self.amount = amount
             self.currency = currency
         } else {
-            // Default to USD if currency is invalid
             self.amount = amount
             self.currency = "USD"
         }
     }
     
-    // Method to convert the current Money to another currency
     public func convert(_ targetCurrency: String) -> Money {
-        // Normalize to USD for easier conversion
         let usdAmount: Double
         switch currency {
         case "USD":
@@ -43,7 +38,6 @@ public struct Money {
             usdAmount = 0
         }
         
-        // Convert from USD to the target currency
         let targetAmount: Int
         switch targetCurrency {
         case "USD":
@@ -61,25 +55,20 @@ public struct Money {
         return Money(amount: targetAmount, currency: targetCurrency)
     }
     
-    // Method to add another Money instance to the current one
     public func add(_ other: Money) -> Money {
         // Convert both to the same currency (USD), then add
         let selfInUSD = self.convert("USD").amount
         let otherInUSD = other.convert("USD").amount
         let totalInUSD = selfInUSD + otherInUSD
         
-        // Convert back to the other currency (same as the other Money instance's currency)
         return Money(amount: totalInUSD, currency: other.currency)
     }
     
-    // Method to subtract another Money instance from the current one
     public func subtract(_ other: Money) -> Money {
-        // Convert both to the same currency (USD), then subtract
         let selfInUSD = self.convert("USD").amount
         let otherInUSD = other.convert("USD").amount
         let totalInUSD = selfInUSD - otherInUSD
         
-        // Convert back to the other currency (same as the other Money instance's currency)
         return Money(amount: totalInUSD, currency: other.currency)
     }
 }
@@ -99,13 +88,11 @@ public class Job {
     var title: String
     var type: JobType
     
-    // Initializer
     public init(title: String, type: JobType) {
         self.title = title
         self.type = type
     }
     
-    // Description for Job
     public var description: String {
         switch type {
         case .Hourly(let wage):
@@ -115,7 +102,6 @@ public class Job {
         }
     }
     
-    // Calculate income based on the job type
     public func calculateIncome(_ hoursWorked: Int) -> Int {
         switch type {
         case .Hourly(let wage):
@@ -125,7 +111,6 @@ public class Job {
         }
     }
 
-    // Raise the salary or hourly wage by a fixed amount
     public func raise(byAmount amount: Double) {
         switch type {
         case .Hourly(let wage):
@@ -135,7 +120,6 @@ public class Job {
         }
     }
 
-    // Raise the salary or hourly wage by a percentage
     public func raise(byPercent percent: Double) {
         switch type {
         case .Hourly(let wage):
@@ -153,14 +137,12 @@ public class Job {
 //
 public class Person {
     
-    // Properties
     var firstName: String
     var lastName: String
     var age: Int
     var _job: Job?
     var _spouse: Person?
     
-    // Initializer
     public init(firstName: String, lastName: String, age: Int) {
         self.firstName = firstName
         self.lastName = lastName
@@ -169,7 +151,6 @@ public class Person {
         self._spouse = nil
     }
     
-    // Method to return a human-readable string description
     public func toString() -> String {
         let jobDescription = job?.description ?? "nil"
         let spouseDescription = spouse?.toString() ?? "nil"
@@ -180,7 +161,7 @@ public class Person {
         get { return _job }
         set {
             if let _ = newValue, age < 18 {
-                _job = nil // Cannot have a job if under 18
+                _job = nil
             } else {
                 _job = newValue
             }
@@ -191,7 +172,7 @@ public class Person {
         get { return _spouse }
         set {
             if let _ = newValue, age < 18 {
-                _spouse = nil // Cannot have a spouse if under 18
+                _spouse = nil
             } else {
                 _spouse = newValue
             }
@@ -207,33 +188,26 @@ public class Family {
     var spouse2: Person
     var members: [Person]
 
-    // Initializer
     public init(spouse1: Person, spouse2: Person) {
         self.spouse1 = spouse1
         self.spouse2 = spouse2
         self.members = [spouse1, spouse2]
     }
 
-    // Method to add a child to the family
     public func haveChild(_ child: Person) -> Person {
         members.append(child)
         return child
     }
     
-    // Method to calculate the total income of the family
     public func householdIncome() -> Int {
         var totalIncome = 0
         
-        // Add the income of each family member
         for member in members {
-            // Only add income for members who are 18 or older
             if member.age >= 18, let job = member.job {
-                totalIncome += job.calculateIncome(2000) // Assume 2000 working hours per year
+                totalIncome += job.calculateIncome(2000)
             }
         }
         
         return totalIncome
     }
 }
-
-

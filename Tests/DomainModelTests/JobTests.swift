@@ -38,10 +38,22 @@ class JobTests: XCTestCase {
         XCTAssert(job.calculateIncome(10) == 320)
     }
     
-    // Test: Try creating a Job with negative hourly wage
+// ADDED TESTS FOR EC
     func testNegativeHourlyJob() {
         let negativeHourlyJob = Job(title: "Cleaner", type: Job.JobType.Hourly(-10.0))
         XCTAssert(negativeHourlyJob.calculateIncome(10) == -100, "Hourly job should accept negative wages but handle them correctly")
+    }
+
+    func testRaiseWithNegativeAmount() {
+        let job = Job(title: "Cleaner", type: Job.JobType.Hourly(10.0))
+        job.raise(byAmount: -5)
+        XCTAssert(job.calculateIncome(10) == 50, "Job raise with negative amount should be handled properly")
+    }
+
+    func testRaiseWithNegativePercent() {
+        let job = Job(title: "Developer", type: Job.JobType.Salary(3000))
+        job.raise(byPercent: -0.1)
+        XCTAssert(job.calculateIncome(40) == 2700, "Job raise with negative percentage should be handled properly")
     }
   
     static var allTests = [
@@ -49,6 +61,8 @@ class JobTests: XCTestCase {
         ("testCreateHourlyJob", testCreateHourlyJob),
         ("testSalariedRaise", testSalariedRaise),
         ("testHourlyRaise", testHourlyRaise),
-        ("testNegativeHourlyJob", testNegativeHourlyJob)
+        ("testNegativeHourlyJob", testNegativeHourlyJob),
+        ("testRaiseWithNegativeAmount", testRaiseWithNegativeAmount),
+        ("testRaiseWithNegativePercent", testRaiseWithNegativePercent)
     ]
 }
