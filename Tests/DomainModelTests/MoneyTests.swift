@@ -80,6 +80,12 @@ class MoneyTests: XCTestCase {
     XCTAssert(total.amount == 10)
     XCTAssert(total.currency == "GBP")
   }
+    
+    // Test: Try creating a Money instance with an invalid currency
+    func testInvalidCurrency() {
+        let invalidMoney = Money(amount: 10, currency: "XYZ")
+        XCTAssert(invalidMoney.currency == "USD", "Money should default to USD if invalid currency is provided")
+    }
 
     static var allTests = [
         ("testCanICreateMoney", testCanICreateMoney),
@@ -96,6 +102,7 @@ class MoneyTests: XCTestCase {
         
         ("testAddUSDtoUSD", testAddUSDtoUSD),
         ("testAddUSDtoGBP", testAddUSDtoGBP),
+        ("testInvalidCurrency", testInvalidCurrency)
     ]
 }
 
